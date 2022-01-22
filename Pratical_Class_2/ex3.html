@@ -32,7 +32,11 @@
         var controls = new THREE.TrackballControls(camera, renderer.domElement);
 
         var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshPhongMaterial({ color: 'red' });
+        var material = new THREE.MeshPhongMaterial({
+            color: '#006063',
+            specular: '#a9fcff',
+            shininess: 100
+        });
         var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 

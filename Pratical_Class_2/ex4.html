@@ -29,7 +29,7 @@
         var geometry = new THREE.SphereGeometry(1, 10, 10); 
         
         // Flat Shading defines whether the material is rendered with flat shading. Default is false.
-        const silver = new THREE.MeshLambertMaterial ({ shading: THREE.SmoothShading });
+        const silver = new THREE.MeshPhongMaterial ({ shading: THREE.SmoothShading });
         silver.color = new THREE.Color(0.50754, 0.50754, 0.50754);
         silver.specular= new THREE.Color(0.508273, 0.508273, 0.508273);
         silver.shininess = 0.4 * 256;
