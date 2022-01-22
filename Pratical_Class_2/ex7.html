@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shading</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="TrackballControls.js"></script>
+    <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var aspect = width / height;
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(width, height);
+        renderer.setClearColor("white", 1);
+        document.body.appendChild(renderer.domElement);
+        var controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+        const car = new THREE.Object3D()
+        const geometry = new THREE.BoxGeometry(2, 1, 4);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: false });
+        const material_glass = new THREE.MeshPhongMaterial({
+            color: 0x00aaff,
+            specular: 0xFFFFFF,
+            shininess: 60,
+            opacity: 0.3,
+            transparent: true
+        });
+        const parallelepiped = new THREE.Mesh(geometry, material_glass);
+        car.add(parallelepiped)
+
+
+        camera.position.z = 5;
+
+        //wheels
+        const wheels = new THREE.Object3D()
+        const wheel = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 14);
+        const wheel_material = new THREE.MeshPhongMaterial({
+            color: '#CC0000', specular: '#a9fcff', shininess: 40, flatShading: false, opacity: 0.55, 
+            transparent: true
+        });
+        const wheel1 = new THREE.Mesh(wheel, wheel_material);
+        wheel1.position.x = 1
+        wheel1.position.y = -0.5
+        wheel1.position.z = 2
+    
+        wheel1.rotation.z = 1.56
+        wheels.add(wheel1);
+
+        const wheel2 = new THREE.Mesh(wheel, wheel_material);
+        wheel2.position.x = 1
+        wheel2.position.z = -2
+        wheel2.position.y = -0.5
+        wheel2.rotation.z = 1.56
+        wheels.add(wheel2);
+
+        const wheel3 = new THREE.Mesh(wheel, wheel_material);
+        wheel3.position.x = -1
+        wheel3.position.z = 2
+        wheel3.position.y = -0.5
+        wheel3.rotation.z = 1.56
+        wheels.add(wheel3);
+
+        const wheel4 = new THREE.Mesh(wheel, wheel_material);
+        wheel4.position.x = -1
+        wheel4.position.z = -2
+        wheel4.position.y = -0.5
+        wheel4.rotation.z = 1.55
+        wheels.add(wheel4);
+
+        car.add(wheels)
+
+        // Lights
+        var dLight = new THREE.DirectionalLight(0xffffff, 1);
+        dLight.position.y = 5
+        scene.add(dLight)
+
+        const aLight = new THREE.AmbientLight(0xffffff);
+        scene.add(aLight);
+
+        camera.position.z = 5;
+        controls.update();
+
+        scene.add(car);
+
+
+        //Define axis
+        const axis = new THREE.Object3D()
+        const axis_cylinder = new THREE.CylinderGeometry(0.1, 0.1, 1, 32);
+
+        const axis_material_x = new THREE.MeshPhongMaterial({ color: '#00ff00', specular: '#a9fcff', shininess: 100, flatShading: false });
+        const axis_x = new THREE.Mesh(axis_cylinder, axis_material_x);
+        axis_x.position.x = -0.5
+        axis_x.position.z = -0.5
+        axis.add(axis_x)
+
+        const axis_material_y = new THREE.MeshPhongMaterial({ color: '#ff0000', specular: '#a9fcff', shininess: 100, flatShading: false });
+        const axis_y = new THREE.Mesh(axis_cylinder, axis_material_y);
+        axis_y.rotation.z = 1.6
+        axis_y.position.y = -0.5
+        axis_y.position.z = -0.5
+        axis.add(axis_y)
+
+        const axis_material_z = new THREE.MeshPhongMaterial({ color: '#0000ff', specular: '#a9fcff', shininess: 100, flatShading: false });
+        const axis_z = new THREE.Mesh(axis_cylinder, axis_material_z);
+        axis_z.rotation.x = 1.6
+        axis_z.position.y = -0.5
+        axis_z.position.x = -0.5
+        axis_z.position.z = -1
+        axis.add(axis_z)
+
+        //add axis
+        scene.add(axis)
+
+
+        const animate = function () {
+
+            requestAnimationFrame(animate);
+
+
+            
+
+            // animate the car
+            car.position.z -= 0.01
+            axis.position.z -=0.01
+
+            renderer.render(scene, camera);
+            controls.update();
+        };
+
+
+
+        window.addEventListener('resize', function () {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            renderer.setSize(w, h);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+
+            renderer.render(scene, camera);
+        })
+
+        //renderer.render( scene, camera );
+        animate();
+    </script>
+</body>
+
+</html>
