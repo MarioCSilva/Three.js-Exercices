@@ -40,7 +40,7 @@
         // left Side Sphere
         sphere1.position.x = -2.5
         
-        const gold = new THREE.MeshPhongMaterial({ shading: THREE.SmoothShading, flatShading: true });
+        const gold = new THREE.MeshPhongMaterial({ shading: THREE.SmoothShading, flatShading: false });
         gold.color = new THREE.Color(0.75164, 0.60648, 0.22648);
         gold.specular = new THREE.Color(0.628281, 0.555802, 0.366065);
         gold.shininess = 0.45 * 256;
@@ -63,10 +63,10 @@
         dLight.position.x = 5
         scene.add(dLight)
 
-        // Green spotlight light in position (0,0,-5) with angle Math.PI/20 and target object in (-2.5,0,0)
+        // // Green spotlight light in position (0,0,-5) with angle Math.PI/20 and target object in (-2.5,0,0)
         var sLight = new THREE.SpotLight("green", 1);
         sLight.angle = Math.PI/20;
-        sLight.target.position.x = -2.5
+        sLight.target.position.x = -2.5;
         sLight.position.z = -5
         sLight.castShadow = true;
         scene.add(sLight.target);
