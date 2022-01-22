@@ -35,13 +35,10 @@
             color: 0x00aaff,
             specular: 0xFFFFFF,
             shininess: 60,
-            opacity: 0.6, // with 75% opacity the balls are not quite visible
+            opacity: 0.3,
             transparent: true
         });
         const parallelepiped = new THREE.Mesh(geometry, material_glass);
-        // parallelepiped.rotation.x = 1.1
-        // parallelepiped.rotation.y = -1.7
-        // parallelepiped.rotation.z = 0.6
         car.add(parallelepiped)
 
 
@@ -51,15 +48,14 @@
         const wheels = new THREE.Object3D()
         const wheel = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 14);
         const wheel_material = new THREE.MeshPhongMaterial({
-            color: '#CC0000', specular: '#a9fcff', shininess: 40, flatShading: false, opacity: 0.55, // with 75% opacity the balls are not quite visible
+            color: '#CC0000', specular: '#a9fcff', shininess: 40, flatShading: false, opacity: 0.55, 
             transparent: true
         });
         const wheel1 = new THREE.Mesh(wheel, wheel_material);
         wheel1.position.x = 1
         wheel1.position.y = -0.5
         wheel1.position.z = 2
-        // wheel1.rotation.x = 1.1
-        // wheel1.rotation.y = -2
+    
         wheel1.rotation.z = 1.56
         wheels.add(wheel1);
 
@@ -67,8 +63,6 @@
         wheel2.position.x = 1
         wheel2.position.z = -2
         wheel2.position.y = -0.5
-        // wheel2.rotation.x = 1.1
-        // wheel2.rotation.y = -2.3
         wheel2.rotation.z = 1.56
         wheels.add(wheel2);
 
