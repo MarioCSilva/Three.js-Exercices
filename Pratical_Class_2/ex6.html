@@ -29,7 +29,7 @@
         var controls = new THREE.TrackballControls(camera, renderer.domElement);
 
         const car = new THREE.Object3D()
-        const geometry = new THREE.BoxGeometry(2, 1, 4);
+        const geometry = new THREE.BoxGeometry();
         const glassMaterial = new THREE.MeshPhongMaterial({
             color: 0x00aaff,
             specular: 0xFFFFFF,
@@ -38,6 +38,7 @@
             transparent: true,
         });
         const parallelepiped = new THREE.Mesh(geometry, glassMaterial);
+        parallelepiped.scale.set(2, 1, 4)
         car.add(parallelepiped)
 
         const wheelGeometry = new THREE.SphereGeometry(0.5,10,10);
