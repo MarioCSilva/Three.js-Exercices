@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Spinning Cube Scene</title>
+    <title>Lighting and materials</title>
     <style>
         body {
             margin: 0;
@@ -13,23 +13,40 @@
 
 <body>
     <script src="https://threejs.org/build/three.js"></script>
-
+    <script src="OrbitControls.js"></script>
+    <script src="TrackballControls.js"></script>
     <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var aspect = width / height;
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
         const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(width, height);
         renderer.setClearColor( "white", 1 );
         document.body.appendChild(renderer.domElement);
 
+        // var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        var controls = new THREE.TrackballControls(camera, renderer.domElement);
 
         var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial({ color: "red", wireframe: true });
+        var material = new THREE.MeshPhongMaterial({ color: 'red' });
         var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
 
+
         camera.position.z = 5;
+        controls.update();
+
+        // Lights
+        var dLight = new THREE.DirectionalLight(0xffffff, 1);
+        dLight.position.y = 5
+        scene.add(dLight)
+
+        const aLight = new THREE.AmbientLight(0xffffff);
+        scene.add(aLight);
 
         function animate() {
             requestAnimationFrame(animate);
@@ -38,11 +55,13 @@
             renderer.render(scene, camera);
         }
 
-        window.addEventListener('resize', function () {
+        window.addEventListener('resize', function() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
+            controls.update();
+            
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        })
 
         animate();
     </script>

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Spinning Cube Scene</title>
+    <title>Camera models</title>
     <style>
         body {
             margin: 0;
@@ -15,14 +15,17 @@
     <script src="https://threejs.org/build/three.js"></script>
 
     <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var aspect = width / height;
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        var camera = new THREE.OrthographicCamera( -3 * aspect, 3 * aspect, 3, -3,  0.1, 1000);
 
         const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(width, height);
         renderer.setClearColor( "white", 1 );
         document.body.appendChild(renderer.domElement);
-
 
         var geometry = new THREE.BoxGeometry(1, 1, 1);
         var material = new THREE.MeshBasicMaterial({ color: "red", wireframe: true });
@@ -33,16 +36,18 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
             renderer.render(scene, camera);
         }
 
-        window.addEventListener('resize', function () {
-            camera.aspect = window.innerWidth / window.innerHeight;
+        window.addEventListener('resize', function() {
+            var aspect = window.innerWidth / window.innerHeight;
+            camera.left   = - 3 * aspect;
+            camera.right  = 3 * aspect;
+            camera.top    = 3;
+            camera.bottom = -3;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        })
 
         animate();
     </script>

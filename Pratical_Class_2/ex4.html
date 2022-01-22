@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shading</title>
+		<style>
+            body {
+                margin: 0;
+            }
+        </style>
+	</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="TrackballControls.js"></script>
+    <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var aspect = width / height;
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(width, height);
+        renderer.setClearColor( "white", 1 );
+        document.body.appendChild(renderer.domElement);
+
+        var geometry = new THREE.SphereGeometry(1, 10, 10); 
+        
+        // Flat Shading defines whether the material is rendered with flat shading. Default is false.
+        const silver = new THREE.MeshLambertMaterial ({ shading: THREE.SmoothShading });
+        silver.color = new THREE.Color(0.50754, 0.50754, 0.50754);
+        silver.specular= new THREE.Color(0.508273, 0.508273, 0.508273);
+        silver.shininess = 0.4 * 256;
+        var sphere1 = new THREE.Mesh(geometry, silver);
+        // left Side Sphere
+        sphere1.position.x = -2.5
+        
+        const gold = new THREE.MeshPhongMaterial({ shading: THREE.SmoothShading, flatShading: true });
+        gold.color = new THREE.Color(0.75164, 0.60648, 0.22648);
+        gold.specular = new THREE.Color(0.628281, 0.555802, 0.366065);
+        gold.shininess = 0.45 * 256;
+        var sphere2 = new THREE.Mesh(geometry, gold);
+        // Right Side Sphere
+        sphere2.position.x = 2.5
+        
+        scene.add(sphere1);
+        scene.add(sphere2);
+
+        // Lights
+        var dLight = new THREE.DirectionalLight(0xffffff, 1);
+        dLight.position.y = 5
+        scene.add(dLight)
+
+        const aLight = new THREE.AmbientLight(0xffffff);
+        scene.add(aLight);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere1.rotation.x += 0.01;
+            sphere1.rotation.y += 0.01;
+            sphere2.rotation.x += 0.01;
+            sphere2.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.render(scene, camera);
+        })
+
+        animate();
+    </script>
+</body>
+</html>
