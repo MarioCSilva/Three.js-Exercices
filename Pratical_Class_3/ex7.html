@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Spinning Image Scene</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="OrbitControls.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        const planets = new THREE.Object3D();
+
+        const sphere = new THREE.SphereGeometry(1, 32, 32);
+        var textloader = new THREE.TextureLoader();
+
+        var tex = textloader.load("earth_surface_2048.jpg")
+        const mesh_phong_material = new THREE.MeshPhongMaterial({ specular: '#a9fcff', shininess: 100, map: tex });
+        const mesh_basic_material = new THREE.MeshBasicMaterial({ map: tex });
+        var z_rotation = 0;
+        var y_rotation = 0.0025;
+
+        const earth = new THREE.Mesh(sphere, mesh_phong_material);
+        planets.add(earth);
+
+        //Moon settings
+        var DISTANCE_FROM_EARTH = 356400;
+        var PERIOD = 28;
+        var INCLINATION = 0.089;
+        var SIZE_IN_EARTHS = 1 / 3.7;
+        var EARTH_RADIUS = 6371;
+
+        var sphere2 = new THREE.SphereGeometry(SIZE_IN_EARTHS, 32, 32);
+        tex2 = textloader.load("moon_1024.jpg")
+        const mesh_phong_material2 = new THREE.MeshPhongMaterial({ specular: '#a9fcff', shininess: 100, map: tex2 });
+        const moon = new THREE.Mesh(sphere2, mesh_phong_material2);
+
+        let distance = DISTANCE_FROM_EARTH / EARTH_RADIUS;
+        moon.position.set(Math.sqrt(distance / 2), 0, -Math.sqrt(distance / 2));
+
+        // Rotate the moon so it shows its moon-face toward earth
+        moon.rotation.y = Math.PI;
+        moon.rotation.x = INCLINATION;
+
+        // For animation 
+        moon.rotation.y += (earth.rotation.y / PERIOD);
+        planets.add(moon);
+        console.log(moon)
+        scene.add(planets);
+
+        var dLight = new THREE.DirectionalLight(0xffffff);
+        dLight.position.set(1, 0, 0)
+        scene.add(dLight)
+
+        var alight = new THREE.AmbientLight(0x333333);
+        scene.add(alight)
+
+        camera.position.z = 5;
+        controls.update();
+
+        document.addEventListener("keydown", onDocumentKeyDown, false)
+
+        function onDocumentKeyDown(event) {
+            var keyCode = event.which;
+            console.log(keyCode)
+
+            if (keyCode == "76") {
+                // if (scene.children.includes(dLight)) {
+                //     scene.remove(dLight);
+                // } else {
+                //     scene.add(dLight)
+                // }
+                if (earth.material == mesh_phong_material) {
+                    earth.material = mesh_basic_material
+                } else {
+                    earth.material = mesh_phong_material
+                }
+            } else if (keyCode == "187") {
+                dLight.intensity += 0.2;
+            } else if (keyCode == "189") {
+                dLight.intensity -= 0.2;
+            }
+            else if (keyCode == "37") {
+                y_rotation += 0.01;
+            }
+            else if (keyCode == "39") {
+                y_rotation -= 0.01;
+            }
+
+            else if (keyCode == "38") {
+                z_rotation += 0.01;
+            }
+            else if (keyCode == "40") {
+                z_rotation -= 0.01;
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            planets.rotation.y += y_rotation;
+            planets.rotation.z += z_rotation;
+        }
+
+        window.addEventListener('resize', function () {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            controls.update();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        })
+
+        animate();
+    </script>
+</body>
+
+</html>
