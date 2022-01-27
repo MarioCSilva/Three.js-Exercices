@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Spinning Image Scene</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="OrbitControls.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        var textloader = new THREE.TextureLoader();
+
+        var materials = [
+            new THREE.MeshBasicMaterial({color: "green", map: textloader.load("Im1.jpg")}),
+            new THREE.MeshBasicMaterial({color: "white", map: textloader.load("Im2.jpg")}),
+            new THREE.MeshBasicMaterial({color: "yellow", map: textloader.load("Im3.jpg")}),
+            new THREE.MeshBasicMaterial({color: "purple", map: textloader.load("Im4.jpg")}),
+            new THREE.MeshBasicMaterial({color: "blue", map: textloader.load("Im5.jpg")}),
+            new THREE.MeshBasicMaterial({color: "red", map: textloader.load("Im6.jpg")})
+        ]
+
+        var cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube);
+
+        camera.position.z = 5;
+        controls.update();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            controls.update();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        })
+
+        animate();
+    </script>
+</body>
+</html>

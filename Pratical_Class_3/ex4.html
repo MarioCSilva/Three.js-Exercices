@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Spinning Image Scene</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="OrbitControls.js"></script>
+
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        const sphere = new THREE.SphereGeometry(1, 32, 32); 
+        var textloader = new THREE.TextureLoader();
+
+        var tex=textloader.load("earth_surface_2048.jpg")
+        const material = new THREE.MeshPhongMaterial( { specular: '#a9fcff',shininess: 100, map: tex } );
+
+        const sphere_mesh = new THREE.Mesh( sphere, material );
+
+        sphere_mesh.rotation.z=0.041;
+        
+        scene.add(sphere_mesh)
+
+        // lights
+        var dLight = new THREE.DirectionalLight(0xffffff);
+        dLight.position.set(1, 0, 0)
+        scene.add(dLight)
+
+        var alight = new THREE.AmbientLight(0x333333);
+        scene.add(alight)
+
+        camera.position.z = 5;
+        controls.update();
+
+        document.addEventListener("keydown", onDocumentKeyDown, false)
+
+        function onDocumentKeyDown (event) {
+            var keyCode = event.which;
+            console.log("tecla " + keyCode)
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere_mesh.rotation.y += 0.0025  ;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            controls.update();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        })
+
+        animate();
+    </script>
+</body>
+</html>
