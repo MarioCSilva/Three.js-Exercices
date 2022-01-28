@@ -55,16 +55,16 @@
             console.log(keyCode)
 
             if (keyCode == "76") {
-                // if (scene.children.includes(dLight)) {
-                //     scene.remove(dLight);
-                // } else {
-                //     scene.add(dLight)
-                // }
-                if (sphere_mesh.material == mesh_phong_material) {
-                    sphere_mesh.material = mesh_basic_material
+                if (scene.children.includes(dLight)) {
+                    scene.remove(dLight);
                 } else {
-                    sphere_mesh.material = mesh_phong_material
+                    scene.add(dLight)
                 }
+                // if (sphere_mesh.material == mesh_phong_material) {
+                //     sphere_mesh.material = mesh_basic_material
+                // } else {
+                //     sphere_mesh.material = mesh_phong_material
+                // }
             } else if (keyCode == "187") {
                 dLight.intensity += 0.2;
             } else if (keyCode == "189") {

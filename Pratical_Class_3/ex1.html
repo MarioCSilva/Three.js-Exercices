@@ -27,15 +27,15 @@
         var textloader = new THREE.TextureLoader();
         var tex = textloader.load("lena.jpg")
         const material = new THREE.MeshBasicMaterial( { map: tex } );
-        var cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        var plane = new THREE.Mesh(geometry, material);
+        scene.add(plane);
 
         camera.position.z = 5;
 
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
+            plane.rotation.x += 0.01;
+            plane.rotation.y += 0.01;
             renderer.render(scene, camera);
         }
 
